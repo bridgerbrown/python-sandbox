@@ -106,3 +106,55 @@ Steve.login("steve", "123")
 
 
 # %%
+# Inheritance -- Parent and Child classes
+class Vehicle:
+    def __init__(self, make, color, model):
+        self.make = make
+        self.color = color
+        self.model = model
+    
+class Car(Vehicle):
+    def __init__(self, make, color, model, doors):
+        Vehicle.__init__(self, make, color, model)
+        self.doors = doors
+
+# %%
+# super()
+class Vehicle():
+    fuelCap = 90
+
+class Car(Vehicle):
+    fuelCap = 50
+
+    def display(self):
+        print(super().fuelCap)
+        print(self.fuelCap)
+obj1 = Car()
+obj1.display()
+# %%
+# Hybrid Inheritance
+class Engine:
+    def setPower(self, power):
+        self.power = power
+
+class CombustionEngine(Engine):
+    def setTankCapacity(self, tankCapacity):
+        self.tankCapacity = tankCapacity
+
+class ElectricEngine(Engine):
+    def setChargeCapacity(self, chargeCapacity):
+        self.chargeCapacity = chargeCapacity
+
+class HybridEngine(CombustionEngine, ElectricEngine):
+    def printDetails(self):
+        print("Power:", self.power)
+        print("Tank Capacity:", self.tankCapacity)
+        print("Charge Capacity:", self.chargeCapacity)
+
+car = HybridEngine()
+car.setPower("2000 CC")
+car.setChargeCapacity("250 W")
+car.setTankCapacity("20 L")
+car.printDetails()
+# %%
+
