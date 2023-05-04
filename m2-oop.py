@@ -157,4 +157,51 @@ car.setChargeCapacity("250 W")
 car.setTankCapacity("20 L")
 car.printDetails()
 # %%
+# Polymorphism
+class Shape:
+    def __init__(self):
+        self.sides = 0
 
+    def getArea(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width=0, height=0):
+        self.width = width
+        self.height = height
+        self.sides = 4
+
+    def getArea(self):
+        return (self.width * self.height)
+    
+class Circle(Shape):
+    def __init__(self, radius=0):
+        self.radius = radius
+
+    def getArea(self):
+        return (self.radius * self.radius * 3.142)
+    
+shapes = [Rectangle(6, 10), Circle(7)]
+print(str(shapes[0].getArea()))
+print(str(shapes[1].getArea()))
+
+# %%
+# Duck Typing
+class Dog:
+    def Speak(self):
+        print("Woof")
+
+class Cat:
+    def Speak(self):
+        print("Meow")
+
+class AnimalSound:
+    def Sound(self, animal):
+        animal.Speak()
+
+sound = AnimalSound()
+dog = Dog()
+cat = Cat()
+
+sound.Sound(dog)
+sound.Sound(cat)
