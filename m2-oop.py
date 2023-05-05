@@ -205,3 +205,45 @@ cat = Cat()
 
 sound.Sound(dog)
 sound.Sound(cat)
+
+# %%
+# Abstract Methods
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+    @abstractmethod
+    def perimeter(self):
+        pass
+
+class Square(Shape):
+    def __init__(self, length):
+        self.length = length
+
+    def area(self):
+        return (self.length * self.length)
+    
+    def perimeter(self):
+        return (4 * self.length)
+
+square = Square(4)
+# %%
+class Shape:
+    sname = "Shape"
+
+    def getName(self):
+        return self.sname
+
+class XShape(Shape):
+    def __init__(self, name):
+        self.xsname = name 
+    
+    def getName(self):
+        return (super().getName() + ", " + self.xsname)
+
+circle = XShape("Circle")
+print(circle.getName())
+# %%
