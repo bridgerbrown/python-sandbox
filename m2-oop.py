@@ -279,3 +279,118 @@ print("")
 s = Sheep("Billy", "Baa Baa", "White")
 s.Animal_details()
 # %%
+# Compsition
+class Engine:
+    def __init__(self, capacity=0):
+        self.capacity = capacity
+
+    def printDetails(self):
+        print("Engine Details:", self.capacity)
+
+class Tires:
+    def __init__(self, tires=0):
+        self.tires = tires
+    
+    def printDetails(self):
+        print("Number of tires:", self.tires)
+
+class Doors:
+    def __init__(self, doors=0):
+        self.doors = doors
+    
+    def printDetails(self):
+        print("Number of doors:", self.doors)
+
+class Car:
+    def __init__(self, eng, tr, dr, color):
+        self.eObj = Engine(eng)
+        self.tObj = Tires(tr)
+        self.dObj = Doors(dr)
+        self.color = color
+
+    def printDetails(self):
+        self.eObj.printDetails()
+        self.tObj.printDetails()
+        self.dObj.printDetails()
+        print("Car color:", self.color)
+    
+car = Car(1600, 4, 2, "Grey")
+car.printDetails()
+# %%
+class Car:
+    def __init__(self, model, color):
+        self.model = model
+        self.color = color
+    
+    def printDetails(self):
+        print("Model:", self.model)
+        print("Color:", self.color)
+
+class SedanEngine:
+    def start(self):
+        print("Car has started.")
+    
+    def stop(self):
+        print("Car has stopped.")
+    
+class Sedan(Car):
+    def __init__(self, model, color):
+        super().__init__(model, color)
+        self.engine = SedanEngine()
+
+    def setStart(self):
+        self.engine.start()
+    
+    def setStop(self):
+        self.engine.stop()
+# %%
+class Player:
+    def __init__(self, ID, name, teamName):
+        self.ID = ID
+        self.name = name
+        self.teamName = teamName
+
+class Team:
+    def __init__(self, name):
+        self.name = name
+        self.players = []
+
+    def addPlayer(self, player):
+        self.players.append(player)
+
+    def getNumberOfPlayers(self):
+        return len(self.players)
+
+class School:
+    def __init__(self, name):
+        self.name = name
+        self.teams = []
+
+    def addTeam(self, team):
+        self.teams.append(team)
+
+    def getTotalPlayersInSchool(self):
+        length = 0
+        for n in self.teams:
+            length = length + (n.getNumberOfPlayers())
+        return length
+
+p1 = Player(1, "Harris", "Red")
+p2 = Player(2, "Carol", "Red")
+p3 = Player(1, "Johnny", "Blue")
+p4 = Player(2, "Sarah", "Blue")
+
+red_team = Team("Red Team")
+red_team.addPlayer(p1)
+red_team.addPlayer(p2)
+
+blue_team = Team("Blue Team")
+blue_team.addPlayer(p2)
+blue_team.addPlayer(p3)
+
+mySchool = School("My School")
+mySchool.addTeam(red_team)
+mySchool.addTeam(blue_team)
+
+print("Total players in mySchool:", mySchool.getTotalPlayersInSchool())
+# %%
