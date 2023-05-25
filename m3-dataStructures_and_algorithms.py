@@ -102,3 +102,87 @@ houses = {1: "Gryf", 2: "Slyth", 3: "Huffle"}
 new_houses = {n**2: house + "!" for (n, house) in houses.items()}
 print(houses)
 print(new_houses)
+# %%
+# Sets
+random_set = {"Yo", 1234, (True, False)}
+print(random_set)
+print(len(random_set))
+
+empty_set = set()
+print(empty_set)
+# %%
+# Updating a set
+empty_set = set()
+empty_set.add(1)
+empty_set.update([2, 3, 4])
+print(empty_set)
+# %%
+# Set unions
+set_A = {1, 2, 3, 4}
+set_B = {'a', 'b', 'c'}
+
+print(set_A | set_B)
+print(set_A.union(set_B))
+# %%
+# Set Intersection
+set_A = {1, 2, 3, 4}
+set_B = {2, 3, 5}
+
+print(set_A & set_B)
+print(set_A.intersection(set_B))
+# %%
+# Set Difference
+set_A = {1, 2, 3, 4}
+set_B = {2, 8, 4, 15}
+
+print(set_A - set_B)
+print(set_A.difference(set_B))
+
+print(set_B - set_A)
+print(set_B.difference(set_A))
+
+# %%
+# Exercise: List to Tuple
+my_list = [34, 82.6, "Darth Vader", 17, "Hannibal"]
+my_tuple = (my_list[0], my_list[-1], len(my_list))
+print(my_tuple)
+# %%
+# Exercise: Kth Maximum Integer in a List
+test_list = [1, 5, 8, 3]
+k = 2
+test_list.sort()
+kth_max = test_list[len(test_list) - k]
+print(kth_max)
+# %%
+# Exercise: Highs and Lows
+num_list = [20, 9, 51, 81, 50, 42, 77]
+
+def count_low_high(num_list):
+    if (len(num_list) == 0):
+        return None
+    high = list(filter(lambda n: n > 50 or n % 3 == 0, num_list))
+    low = list(filter(lambda n: n <= 50 and not n % 3 == 0, num_list))
+    return [len(low), len(high)]
+
+print(count_low_high(num_list))
+# %%
+# Stacks
+class Stack():
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+    
+    def pop(self):
+        return self.items.pop()
+    
+    def is_empty(self):
+        return self.items == []
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+    
+    def get_stack(self):
+        return self.items
