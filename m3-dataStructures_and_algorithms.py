@@ -395,19 +395,146 @@ class LinkedList:
         if node is None:
             return 0
         return 1 + self.len_recursive(node.next)
+    
+    def swap_nodes(self, key_1, key_2):
+
+        if key_1 == key_2:
+            return
+        
+        prev_1 = None
+        curr_1 = self.head
+        while curr_1 and curr_1.data != key_1:
+            prev_1 = curr_1
+            curr_1 = curr_1
+
+        prev_2 = None
+        curr_2 = self.head
+        while curr_2 and curr_2.data != key_2:
+            prev_2 = curr_2
+            curr_2 = curr_2.next
+        
+        if not curr_1 or not curr_2:
+            return
+        
+        if prev_1:
+            prev_1.next = curr_2
+        else:
+            self.head = curr_2
+
+        if prev_2:
+            prev_2.next = curr_1
+        else:
+            self.head = curr_1
+
+        curr_1.next, curr_2.next = curr_2.next, curr_1.next
+
+    def reverse_iterative(self):
+
+        prev = None
+        cur = self.head
+        while cur:
+            nxt = cur.next
+            cur.next = prev
+            prev = cur
+            cur = nxt
+        self.head = prev
+
+    def reverse_recursive(self):
+
+        def _reverse_recursive(cur, prev):
+            if not cur:
+                return prev
+
+            nxt = cur.next
+            cur.next = prev
+            prev = cur
+            cur = nxt
+            return _reverse_recursive(cur, prev)
+        
+        self.head = _reverse_recursive(cur=self.head, prev=None)
+
+    def merge_sorted(self, llist):
+
+        p = self.head
+        q = llist.head
+        s = None
+
+        if not p:
+            return q
+        if not q:
+            return p
+
+        if p and q:
+            if p.data <= q.data:
+                s = p
+                p = s.next
+            else:
+                s = q
+                q = s.next
+            new_head = s
+        while p and q:
+            if p.data <= q.data:
+                s.next = p
+                s = p
+                p = s.next
+            else:
+                s.next = q
+                s = q
+                q = s.next
+        if not p:
+            s.next = q
+        if not q:
+            s.next = p
+            
+        self.head = new_head
+        return self.head
+
+    def remove_duplicates(self):
+        
+        cur = self.head
+        prev = None
+
+        dup_values = dict()
+
+        while cur:
+            if cur.data in dup_values:
+                prev.next = cur.next
+                cur = None
+            else:
+                dup_values[cur.data] = 1
+                prev = cur
+            cur = prev.next
+            
 
 llist = LinkedList()
 llist.append("A")
 llist.append("B")
 llist.append("C")
-
 llist.prepend("D")
-
 llist.delete_node("B")
 llist.delete_node("E")
+llist.append("F")
+llist.append("G")
 llist.delete_node_at_pos(0)
+llist.swap_nodes("A", "C")
+llist.reverse_iterative()
+llist.reverse_recursive()
+
+llist_1 = LinkedList()
+llist_2 = LinkedList()
+llist_1.append(1)
+llist_1.append(1)
+llist_1.append(1)
+llist_1.append(9)
+llist_1.append(10)
+llist_2.append(2)
+llist_2.append(3)
+llist_2.append(4)
+llist_2.append(6)
+llist_2.append(8)
+llist_1.merge_sorted(llist_2)
+llist_1.remove_duplicates()
 
 llist.print_list()
-print(llist.len_iterative())
-print(llist.len_recursive(llist.head))
+llist_1.print_list()
 # %%
