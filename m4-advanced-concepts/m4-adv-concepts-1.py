@@ -306,5 +306,279 @@ import sys
 sys.path.append('/usercode/my_package')
 import my_package
 
+# Optional Imports
+try:
+    # For Python 3
+    from http.client import responses
+except ImportError:  # For Python 2.5-2.7
+    try:
+        from httplib import responses  # NOQA
+    except ImportError:  # For Python 2.4
+        from BaseHTTPServer import BaseHTTPRequestHandler as _BHRH
+    responses = dict([(k, v[0]) for k, v in _BHRH.responses.items()])
+
+# Local Imports
+import sys  # global scope
+
+def square_root(a):
+    # This import is into the square_root functions local scope
+    import math
+    return math.sqrt(a)
+
+def my_pow(base_num, power):
+    return math.pow(base_num, power)
+
+if __name__ == '__main__':
+    print(square_root(49))
+    print(my_pow(2, 3))
 
 
+# __The importlib Module__
+import importlib
+import foo
+
+def dynamic_import(module):
+
+    return importlib.import_module(module)
+
+if __name__ == '__main__':
+    module = dynamic_import('foo')
+    module.main()
+
+    module_two = dynamic_import('bar')
+    module_two.main()
+
+
+
+import importlib.util
+
+def import_source(module_name):
+    module_file_path = module_name.__file__
+    module_name = module_name.__name__
+
+    module_spec = importlib.util.spec_from_file_location(module_name,
+            module_file_path)
+    module = importlib.util.module_from_spec(module_spec)
+    module_spec.loader.exec_module(module)
+    print (dir(module))
+
+    msg = \
+        'The {module_name} module has the following methods: {methods}'
+    print (msg.format(module_name=module_name, methods=dir(module)))
+
+
+if __name__ == '__main__':
+    import logging
+    import_source(logging)
+
+
+#__Iterators and Generators__
+# Iterators
+print (iter(my_list))
+
+list_iterator = iter(my_list)
+print (next(list_iterator))
+
+print (next(list_iterator))
+
+print (next(list_iterator))
+
+print (next(list_iterator))
+
+
+my_list = [1, 2, 3]
+for item in iter(my_list):
+    print(item)
+
+
+# Creating an iterator for string of letters
+class MyIterator:
+    
+    def __init__(self, letters):
+        self.letters = letters
+        self.position = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.position >= len(self.letters):
+            raise StopIteration
+        letter = self.letters[self.position]
+        self.position += 1
+        return letter
+
+
+if __name__ == '__main__':
+    i = MyIterator('abcd')
+    for item in i:
+        print (item)
+
+# Generators
+def doubler_generator():
+    number = 2
+    while True:
+        yield number
+        number *= number
+
+doubler = doubler_generator()
+print (next(doubler))
+
+print (next(doubler))
+
+print (next(doubler))
+
+print (next(doubler))
+
+
+
+def silly_generator():
+    yield 'Python'
+    yield 'Rocks'
+    yield 'So do you!'
+
+
+gen = silly_generator()
+for item in gen:
+    print (item)
+
+
+#__The itertools module__
+# count(start=0, step=1)
+from itertools import count
+for i in count(10):
+    if i > 20: 
+        break
+    else:
+        print(i)
+
+
+from itertools import count
+from itertools import islice
+for i in islice(count(10), 5):
+    print(i)
+
+# cycle(iterable)
+from itertools import cycle
+count = 0
+for item in cycle('XYZ'):
+    if count > 7:
+        break
+    print(item)
+    count += 1
+
+# repeat(object)
+from itertools import repeat
+repeat(5, 5)
+repeat(5, 5)
+
+iterator = repeat(5, 5)
+print (next(iterator))
+
+
+print (next(iterator))
+
+
+print (next(iterator))
+
+
+print (next(iterator))
+
+
+print (next(iterator))
+
+
+print (next(iterator))
+
+
+# Iterators That Terminate
+from itertools import accumulate
+print (list(accumulate(range(10))))
+
+
+from itertools import chain
+my_list = ['foo', 'bar']
+numbers = list(range(5))
+cmd = ['ls', '/some/dir']
+my_list = list(chain(['foo', 'bar'], cmd, numbers))
+
+print (my_list)
+#['foo', 'bar', 'ls', '/some/dir', 0, 1, 2, 3, 4]
+
+
+from itertools import chain
+numbers = list(range(5))
+cmd = ['ls', '/some/dir']
+
+print (list(chain.from_iterable([cmd, numbers])))
+#['ls', '/some/dir', 0, 1, 2, 3, 4]
+
+
+from itertools import compress
+letters = 'ABCDEFG'
+bools = [True, False, True, True, False]
+print (list(compress(letters, bools)))
+#['A', 'C', 'D']
+
+
+from itertools import dropwhile
+def greater_than_five(x):
+    return x > 5 
+
+print (list(dropwhile(greater_than_five, [6, 7, 8, 9, 1, 2, 3, 10])))
+#[1, 2, 3, 10]
+
+
+from itertools import filterfalse
+def greater_than_five(x):
+    return x > 5 
+
+print (list(filterfalse(greater_than_five, [6, 7, 8, 9, 1, 2, 3, 10])))
+#[1, 2, 3]
+
+
+from itertools import groupby
+
+vehicles = [('Ford', 'Taurus'), ('Dodge', 'Durango'),
+            ('Chevrolet', 'Cobalt'), ('Ford', 'F150'),
+            ('Dodge', 'Charger'), ('Ford', 'GT')]
+
+sorted_vehicles = sorted(vehicles)
+
+for key, group in groupby(sorted_vehicles, lambda make: make[0]):
+    for make, model in group:
+        print('{model} is made by {make}'.format(model=model,
+                                                 make=make))
+    print ("**** END OF GROUP ***\n")
+
+
+from itertools import islice
+iterator = islice('123456', 4)
+print (next(iterator))
+#'1'
+
+print (next(iterator))
+#'2'
+
+print (next(iterator))
+#'3'
+
+print (next(iterator))
+#'4'
+
+print (next(iterator))
+#Traceback (most recent call last):
+#  File "/usercode/__ed_file.py", line 15, in <module>
+# print (next(iterator))
+#StopIteration:
+
+
+from itertools import starmap
+def add(a, b):
+    return a+b
+
+for item in starmap(add, [(2,3), (4,5)]):
+    print(item)
+
+#5
+#9
