@@ -582,3 +582,169 @@ for item in starmap(add, [(2,3), (4,5)]):
 
 #5
 #9
+
+
+from itertools import takewhile
+print (list(takewhile(lambda x: x<5, [1,4,6,4,1])))
+#[1, 4]
+
+
+from itertools import tee
+data = 'ABCDE'
+iter1, iter2 = tee(data)
+for item in iter1:
+    print(item)
+
+#A
+#B
+#C
+#D
+#E
+
+for item in iter2:
+    print(item)
+
+#A
+#B
+#C
+#D
+#E
+
+
+from itertools import combinations
+print (list(combinations('WXYZ', 2)))
+
+
+from itertools import combinations_with_replacement
+for item in combinations_with_replacement('WXYZ', 2):
+    print(''.join(item))
+
+
+from itertools import permutations
+for item in permutations('WXYZ', 2):
+    print(''.join(item))
+
+
+#__Regular Expressions__
+# The Matching Characters
+import re
+text = 'abcdefghijk'
+parser = re.search('a[b-f]*f', text)
+print (parser)
+print (parser.group())
+
+# Compiling the Expressions
+import re
+
+text = "The ants go marching one by one"
+
+strings = ['the', 'one']
+
+for string in strings:
+    regex = re.compile(string)
+    match = re.search(regex, text)
+    if match:
+        print('Found "{}" in "{}"'.format(string, text))
+        text_pos = match.span()
+        print(text[match.start():match.end()])
+    else:
+        print('Did not find "{}"'.format(string))
+
+# Compilation Flags
+import re
+
+def validate_input(input_email):
+
+	
+	re_compilation=re.compile(r"""
+                           ^([a-z0-9_\.-]+)      #it will pick the first local part
+                           @                     # will pick the @ sign
+                            ([0-9a-z\.-]+)       # will pick the domain name
+                           \.                    # will have single "."
+                            ([a-z]{2,6})$        # it will pick the top level Domain (last part)    
+                           """,
+           re.VERBOSE)
+
+	result=re_compilation.fullmatch(input_email)
+
+	if result:
+		print("{} is Valid.".format(input_email))
+		
+	else:
+		print("{} is Invalid".format(input_email))
+
+
+validate_input("name@gmail.com")
+validate_input("educative@.com")
+
+# Finding Multiple Instances
+import re
+silly_string = "the cat in the hat"
+pattern = "the"
+print (re.findall(pattern, silly_string))
+
+
+#__The typing module__
+def some_function(number: int, name: str) -> None:
+  print("%s entered %s" % (name, number))
+
+print (some_function(13, 'Mike'))
+
+
+def process_data(my_list: list, name: str) -> bool:
+    return name in my_list
+
+if __name__ == '__main__':
+    my_list = ['Mike', 'Nick', 'Toby']
+    print( process_data(my_list, 'Mike') )
+    print( process_data(my_list, 'John') )
+
+
+Animal = str
+
+def zoo(animal: Animal, number: int) -> None:
+    print("The zoo has %s %s" % (number, animal))
+
+if __name__ == '__main__':
+    zoo('Zebras', 10)
+
+
+#__Python Built-ins__
+
+print (any([0,0,0,1])) # True, the 1
+
+
+my_string = 'abcdefg'
+for pos, letter in enumerate(my_string):
+    print (pos, letter)
+
+
+var = 10
+source = 'var * 2'
+print (eval(source))
+
+
+def less_than_ten(x):
+    return x < 10
+
+my_list = [1, 2, 3, 10, 11, 12]
+for item in filter(less_than_ten, my_list):
+    print(item)
+
+
+def doubler(x):
+    return x * 2
+
+my_list = [1, 2, 3, 4, 5]
+for item in map(doubler, my_list):
+    print(item)
+
+
+keys = ['x', 'y', 'z']
+values = [5, 6, 7]
+print (zip(keys, values))
+
+
+print (list(zip(keys, values)))
+
+
