@@ -187,3 +187,230 @@ DELETE FROM table_name
 WHERE name='Ford';
 
 DROP TABLE table_name;
+
+
+# MySQL
+import mysql.connector
+
+conn = mysql.connector.connect(host='localhost', user='educative', password='secret', database='test')
+cursor = conn.cursor()
+
+cursor.execute("SELECT * FROM table_name")
+
+# get a single row
+row = cursor.fetchone()
+print('printing the first row:')
+print(row)
+
+# disconnect from the database
+conn.close()
+
+
+# PostgreSQL
+import psycopg2
+
+string = "postgresql://educative@localhost/test?password=secret"
+conn = psycopg2.connect(string)
+cursor = conn.cursor()
+
+# execute a query
+cursor.execute("SELECT * FROM table_name;")
+row = cursor.fetchone() 
+print(row)
+# close your cursor and connection
+cursor.close()
+conn.close()
+
+
+# Object Relational Mappers
+import sqlalchemy as sal
+from sqlalchemy import create_engine
+
+engine = create_engine("postgresql+psycopg2://educative:secret@localhost:5432/test")
+conn = engine.connect()
+cursor = conn_sql.cursor()
+print(engine)
+# execute a query
+cursor.execute("SELECT * FROM table_name;")
+row = cursor.fetchone()
+print(row)
+# close your cursor and connection
+cursor.close()
+conn.close()
+
+
+#__The super built-in__
+class MyParentClass():
+    def __init__(self, x, y):
+        pass
+
+class SubClass(MyParentClass):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
+# MRO
+class X:
+    def __init__(self):
+        print('X')
+        super().__init__()
+
+class Y:
+    def __init__(self):
+        print('Y')
+        super().__init__()
+
+class Z(X, Y):
+    pass
+
+
+z = Z()
+print(Z.__mro__)
+
+
+class Base():
+    def __init__(self):
+        s = super()
+        print(s.__thisclass__)
+        print(s.__self_class__)
+        s.__init__()
+
+class SubClass(Base):
+    pass
+
+sub = SubClass()
+
+
+#__Descriptors__
+class MyDescriptor():
+    def __init__(self, initial_value=None, name='my_var'):
+        self.var_name = name
+        self.value = initial_value
+
+    def __get__(self, obj, objtype):
+        print('Getting', self.var_name)
+        return self.value
+
+    def __set__(self, obj, value):
+        msg = 'Setting {name} to {value}'
+        print(msg.format(name=self.var_name, value=value))
+        self.value = value
+
+class MyClass():
+    desc = MyDescriptor(initial_value='Mike', name='desc')
+    normal = 10
+
+if __name__ == '__main__':
+    c = MyClass()
+    print(c.desc)
+    print(c.normal)
+    c.desc = 100
+    print(c.desc)
+
+
+#__Scope__
+
+# Local Scope
+x = 10
+def my_func(a, b):
+    print(x)
+    print(z)
+
+
+my_func(1, 2)
+
+# Global Scope
+def my_func(a, b):
+    global x
+    print(x)
+    x = 5
+    print(x)
+
+if __name__ == '__main__':
+    x = 10
+    my_func(1, 2)
+    print(x)
+
+# nonLocal Scope
+def counter():
+    num = 0
+    def incrementer():
+        nonlocal num
+        num += 1
+        return num
+    return incrementer
+c = counter()
+
+print (c)
+print (c())
+print (c())
+print (c())
+
+
+#__Web Scraping__
+import requests
+from bs4 import BeautifulSoup
+
+url = 'https://www.educative.io/blog/get-started-with-python-debuggers'
+
+def get_articles():
+    req = requests.get(url)
+    html = req.text
+    soup = BeautifulSoup(html, 'html.parser')
+    pages = soup.findAll('h1')
+
+    articles = {i.a['href']: i.text.strip()
+                for i in pages if i.a}
+    
+    for article in articles:
+        s = '{title}: {url}'.format(title=articles[article].encode('utf-8'),url=article)
+        print(s)
+
+    return articles
+
+if __name__ == '__main__':
+    articles = get_articles()
+
+
+#__Working with FTP__
+from ftplib import FTP
+ftp = FTP('ftp.cse.buffalo.edu')
+print (ftp.login())
+#'230 Guest login ok, access restrictions apply.'
+
+from ftplib import FTP
+ftp = FTP()
+HOST = 'ftp.cse.buffalo.edu'
+PORT = 12345
+ftp.connect(HOST, PORT)
+
+
+from ftplib import FTP
+ftp = FTP('ftp.cse.buffalo.edu')
+ftp.login()
+
+print(ftp.retrlines('LIST'))
+#drwxr-xr-x    2 202019   5564         4096 Feb 10 11:34 CSE421
+#drwxr-xr-x    2 202019   5564         4096 Feb 10 11:35 CSE468
+#drwx------    2 0        0           16384 Sep 17  2020 lost+found
+#drwxr-xr-x    6 89987    329651       4096 Sep 05  2015 mirror
+#drwxrwxr-x    4 6980     546          4096 Sep 23  2020 pub
+#drwxr-xr-x   14 0        120          4096 Sep 23  2020 users
+#226 Directory send OK.
+
+print(ftp.cwd('mirror'))
+#250 Directory successfully changed.
+
+
+from ftplib import FTP
+
+ftp = FTP('ftp.debian.org')
+print(ftp.login())
+#'230 Login successful.'
+
+print(ftp.cwd('debian')  )
+#'250 Directory successfully changed.'
+
+
+out = 'README'
+with open(out, 'wb') as f:
+    ftp.retrbinary('RETR ' + 'README.html', f.write)
