@@ -414,3 +414,180 @@ print(ftp.cwd('debian')  )
 out = 'README'
 with open(out, 'wb') as f:
     ftp.retrbinary('RETR ' + 'README.html', f.write)
+
+#__The urllib Module__
+import urllib.request
+url = urllib.request.urlopen('https://www.google.com/')
+print (url.geturl())
+#'https://www.google.com/'
+print (url.info())
+#<http.client.HTTPMessage object at 0x7fddc2de04e0>
+header = url.info()
+print (header.as_string())
+print (url.getcode())
+#200
+
+import urllib.request
+url = 'http://www.blog.pythonlibrary.org/wp-content/uploads/2012/06/wxDbViewer.zip'
+response = urllib.request.urlopen(url)
+data = response.read()
+with open('test.zip', 'wb') as fobj:
+    fobj.write(data)
+
+from urllib.parse import urlparse
+result = urlparse('https://duckduckgo.com/?q=python+stubbing&t=canonical&ia=qa')
+print (result)
+print (result.netloc)
+print (result.geturl())
+print (result.port)
+
+import urllib.robotparser
+robot = urllib.robotparser.RobotFileParser()
+print (robot.set_url('http://arstechnica.com/robots.txt'))
+#None
+print (robot.read())
+#None
+print (robot.can_fetch('*', 'http://arstechnica.com/'))
+#True
+print (robot.can_fetch('*', 'http://arstechnica.com/cgi-bin/'))
+#False
+
+
+#__The unittest Module__
+import mymath
+import unittest
+
+class TestAdd(unittest.TestCase):
+    """
+    Test the add function from the mymath library
+    """
+
+    def test_add_integers(self):
+        """
+        Test that the addition of two integers returns the correct total
+        """
+        result = mymath.add(1, 2)
+        self.assertEqual(result, 3)
+
+    def test_add_floats(self):
+        """
+        Test that the addition of two floats returns the correct result
+        """
+        result = mymath.add(10.5, 2)
+        self.assertEqual(result, 12.5)
+
+    def test_add_strings(self):
+        """
+        Test the addition of two strings returns the two string as one
+        concatenated string
+        """
+        result = mymath.add('abc', 'def')
+        self.assertEqual(result, 'abcdef')
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+#__The mock Module__
+from unittest.mock import Mock
+my_mock = Mock()
+my_mock.__str__ = Mock(return_value='Mocking')
+print(str(my_mock))
+#'Mocking'
+
+
+#__The asyncio Module__
+import asyncio
+
+async def my_coro():
+    await func()
+
+
+import asyncio
+import functools
+
+
+def event_handler(loop, stop=False):
+    print('Event handler called')
+    if stop:
+        print('stopping the loop')
+        loop.stop()
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    try:
+        loop.call_soon(functools.partial(event_handler, loop))
+        print('starting event loop')
+        loop.call_soon(functools.partial(event_handler, loop, stop=True))
+
+        loop.run_forever()
+    finally:
+        print('closing event loop')
+        loop.close() 
+
+
+#__The threading Module__
+import threading
+
+
+def doubler(number):
+    """
+    A function that can be used by a thread
+    """
+    print(threading.currentThread().getName() + '\n')
+    print(number * 2)
+    print()
+
+
+if __name__ == '__main__':
+    for i in range(5):
+        my_thread = threading.Thread(target=doubler, args=(i,))
+        my_thread.start()
+
+
+
+import threading
+
+total = 0
+lock = threading.Lock()
+
+def update_total(amount):
+    """
+    Updates the total by the given amount
+    """
+    global total
+    lock.acquire()
+    try:
+        total += amount
+    finally:
+        lock.release()
+    print (total)
+
+if __name__ == '__main__':
+    for i in range(10):
+        my_thread = threading.Thread(
+            target=update_total, args=(5,))
+        my_thread.start()
+
+
+import threading
+
+total = 0
+lock = threading.Lock()
+
+def update_total(amount):
+    """
+    Updates the total by the given amount
+    """
+    global total
+    with lock:
+        total += amount
+    print (total)
+
+if __name__ == '__main__':
+    for i in range(10):
+        my_thread = threading.Thread(
+            target=update_total, args=(5,))
+        my_thread.start()
